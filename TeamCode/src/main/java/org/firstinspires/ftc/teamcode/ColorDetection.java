@@ -19,7 +19,17 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class ColorDetection extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
-    RedDeterminationPipeline pipeline;
+    RedDeterminationPipeline pipelineRed;
+
+    BlueDeterminationPipeline pipelineBlue;
+
+    boolean lockedIn = false;
+    int team = 0;//0==Blue   1==Red
+    int Team() {
+        return team%2;
+    }
+    boolean a1IsPressed = false;
+    boolean b1IsPressed = false;
 
     @Override
     public void runOpMode()
@@ -33,8 +43,9 @@ public class ColorDetection extends LinearOpMode
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new RedDeterminationPipeline();
-        phoneCam.setPipeline(pipeline);
+        pipelineRed = new RedDeterminationPipeline();
+        pipelineBlue = new BlueDeterminationPipeline();
+        phoneCam.setPipeline(pipelineBlue);
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
         // out when the RC activity is in portrait. We do our actual image processing assuming
@@ -58,11 +69,59 @@ public class ColorDetection extends LinearOpMode
             }
         });
 
+        while (!opModeIsActive() && !isStopRequested())
+        {
+            if(lockedIn) {
+                if(Team()==0) {
+                    phoneCam.setPipeline(pipelineBlue);
+                    telemetry.addData("Analysis", pipelineBlue.getAnalysis());
+                    telemetry.addData("Team: ","Blue");
+                } else {
+                    phoneCam.setPipeline(pipelineRed);
+                    telemetry.addData("Analysis", pipelineRed.getAnalysis());
+                    telemetry.addData("Team: ","Red");
+                }
+                telemetry.addData("Press A to back out","");
+                telemetry.update();
+                if(gamepad1.a && !a1IsPressed) {
+                    lockedIn = false;
+                    a1IsPressed = true;
+                } else if(!gamepad1.a && a1IsPressed) {
+                    a1IsPressed = false;
+                }
+            } else {
+                if(gamepad1.a && !a1IsPressed) {
+                    lockedIn = true;
+                    a1IsPressed = true;
+                } else if(!gamepad1.a && a1IsPressed) {
+                    a1IsPressed = false;
+                }
+
+                if(gamepad1.b && !b1IsPressed) {
+                    team++;
+                    b1IsPressed = true;
+                } else if(!gamepad1.b && b1IsPressed) {
+                    b1IsPressed = false;
+                }
+
+                telemetry.addData("Press A to lock in decision","");
+                if(Team()==0) {
+                    telemetry.addData("Team: ","Blue");
+                } else {
+                    telemetry.addData("Team: ","Red");
+                }
+                telemetry.addData("team = ",team);
+                telemetry.update();
+            }
+
+
+        }
+
         waitForStart();
 
         while (opModeIsActive())
         {
-            telemetry.addData("Analysis", pipeline.getAnalysis());
+            telemetry.addData("Analysis", pipelineRed.getAnalysis());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
