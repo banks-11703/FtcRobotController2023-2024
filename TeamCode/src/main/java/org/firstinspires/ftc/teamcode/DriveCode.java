@@ -1,5 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-public class DriveCode extends DriveCodeCommon {
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp
+
+public class DriveCode extends DriveCodeCommon {
+    @Override
+    public void runOpMode() {
+        Initialization();
+        if (isStopRequested()) return;
+        while (opModeIsActive() && !isStopRequested()) {
+        ServoGoBrr();
+        }
+    }
 }
