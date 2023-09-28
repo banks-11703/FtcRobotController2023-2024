@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -18,7 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @TeleOp
 public class ColorDetection extends LinearOpMode
 {
-    OpenCvInternalCamera phoneCam;
+    OpenCvCamera camera;
     RedDeterminationPipeline pipelineRed;
 
     BlueDeterminationPipeline pipelineBlue;
@@ -42,42 +43,48 @@ public class ColorDetection extends LinearOpMode
          */
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         pipelineRed = new RedDeterminationPipeline();
         pipelineBlue = new BlueDeterminationPipeline();
-        phoneCam.setPipeline(pipelineBlue);
+        camera.setPipeline(pipelineBlue);
 
-        // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
-        // out when the RC activity is in portrait. We do our actual image processing assuming
-        // landscape orientation, though.
-        phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
-
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            public void onOpened() {
+                camera.startStreaming(1280, 960, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
+            public void onError(int errorCode) {
+
             }
         });
 
-        while (!opModeIsActive() && !isStopRequested())
-        {
+//        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+//        {
+//            @Override
+//            public void onOpened()
+//            {
+//                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode)
+//            {
+//                /*
+//                 * This will be called if the camera could not be opened
+//                 */
+//            }
+//        });
+
+        while (!opModeIsActive() && !isStopRequested()) {
             if(lockedIn) {
                 if(Team()==0) {
-                    phoneCam.setPipeline(pipelineBlue);
+                    camera.setPipeline(pipelineBlue);
                     telemetry.addData("Analysis", pipelineBlue.getAnalysis());
                     telemetry.addData("Team: ","Blue");
                 } else {
-                    phoneCam.setPipeline(pipelineRed);
+                    camera.setPipeline(pipelineRed);
                     telemetry.addData("Analysis", pipelineRed.getAnalysis());
                     telemetry.addData("Team: ","Red");
                 }
@@ -119,8 +126,7 @@ public class ColorDetection extends LinearOpMode
 
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             telemetry.addData("Analysis", pipelineRed.getAnalysis());
             telemetry.update();
 
@@ -151,11 +157,11 @@ public class ColorDetection extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(109,98);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(181,98);
-        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253,98);
-        static final int REGION_WIDTH = 20;
-        static final int REGION_HEIGHT = 20;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(400,480);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(700,480);
+        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(1000,480);
+        static final int REGION_WIDTH = 100;
+        static final int REGION_HEIGHT = 100;
 
         /*
          * Points which actually define the sample region rectangles, derived from above values
@@ -419,11 +425,11 @@ public class ColorDetection extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(109,98);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(181,98);
-        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253,98);
-        static final int REGION_WIDTH = 20;
-        static final int REGION_HEIGHT = 20;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(400,480);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(700,480);
+        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(1000,480);
+        static final int REGION_WIDTH = 100;
+        static final int REGION_HEIGHT = 100;
 
         /*
          * Points which actually define the sample region rectangles, derived from above values
