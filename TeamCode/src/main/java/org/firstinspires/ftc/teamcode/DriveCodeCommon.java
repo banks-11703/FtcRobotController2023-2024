@@ -31,12 +31,4 @@ public class DriveCodeCommon extends LinearOpMode {
         waitForStart();
     }
 
-    public void ServoGoBrr() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        if (gamepad1.a) {
-            //            drive.droneShooter.setPosition(0);
-        } else {
-            //            drive.droneShooter.setPosition(1);
-        }
-    }
 }

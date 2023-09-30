@@ -10,7 +10,7 @@ public class DriveCode extends DriveCodeCommon {
         Initialization();
         if (isStopRequested()) return;
         while (opModeIsActive() && !isStopRequested()) {
-        ServoGoBrr();
+
         }
     }
 }
