@@ -4,7 +4,9 @@ public class GamepadEx {
     private boolean wasPressed;
     private int toggle;
     private int cycleLength;
-    private boolean cycleUp;//true if you want to cycle upwards. False otherwise
+
+    //true if you want to cycle upwards. False otherwise
+    private boolean cycleUp;
 
 
     public GamepadEx() {
@@ -43,7 +45,7 @@ public class GamepadEx {
         return wasPressed;
     }
 
-    public boolean getToggle() {
+    public boolean isToggled() {
         if(toggle%2 == 0) {
             return false;
         } else {
