@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -16,71 +17,60 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @TeleOp
 @Config
 public class PidTest extends LinearOpMode {
-    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-//    public static double Kp = 10;
-//    public static double Ki = 3;
-//    public static double Kd = 0;
-//    public static double Kf = 0;
-//    public static int target = 0;
-    public static double closedServo = 0;
-    public static double openServo = 0;
+    public static double rKp = 10;
+    public static double rKi = 3;
+    public static double rKd = 0;
+    public static double rKf = 0;
+    public static double lKp = 10;
+    public static double lKi = 3;
+    public static double lKd = 0;
+    public static double lKf = 0;
+    public static int[] target = {0,100,200,300};
+    GamepadEx rb2 = new GamepadEx(4,true);
+    GamepadEx lb2 = new GamepadEx(4,false);
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));        FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
         dashboardTelemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
         dashboardTelemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
         dashboardTelemetry.addData("Target", 0);
         dashboardTelemetry.update();
-        spinner.setTargetPosition(target);
-        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        GamepadEx b1 = new GamepadEx();
-        GamepadEx a1 = new GamepadEx();
-
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
         waitForStart();
         runtime.reset();
 
 
         while (opModeIsActive() && !isStopRequested()) {
-            a1.updateButton(gamepad1.a);
-            if (a1.isPressed()){
-                outake.setPosition(openServo);
-            }else{
-                outake.setPosition(closedServo);
+            rb2.updateButton(gamepad2.right_bumper);
+            if(rb2.isPressed()){
+                lb2.setToggle(rb2.getCycle());
             }
-//            if (gamepad1.a && !buttonAWasPressed) {
-//                if (target == 0) {
-//                    target = 2000;
-//                    spinner.setPower(1);
-//                } else {
-//                    target = 0;
-//                    spinner.setPower(0);
-//                }
-//                buttonAWasPressed = true;
-//            } else if (!gamepad1.a && buttonAWasPressed) {
-//                buttonAWasPressed = false;
-//            }
-//            spinner.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(Kp, Ki, Kd));
-//            spinner.setTargetPosition(target);
-
-//            telemetry.addData("Reality: ", spinner.getCurrentPosition());
-//            telemetry.addData("Target", target);
-            b1.updateButton(gamepad1.b);
-//            telemetry.addData("Pressed",b1.isPressed());
-//            telemetry.addData("Toggled",b1.isToggled());
-//            telemetry.update();
+            lb2.updateButton(gamepad2.left_bumper);
+            if(lb2.isPressed()){
+                rb2.setToggle(lb2.getCycle());
+            }
 
 
-//            dashboardTelemetry.addData("Reality", spinner.getCurrentPosition());
-//            dashboardTelemetry.addData("Target", target);
-//            dashboardTelemetry.addData("Power", spinner.getPower());
-//            dashboardTelemetry.addData("Pid: ",spinner.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-//            dashboardTelemetry.update();
+            drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
+            drive.rightLift.setTargetPosition(target[rb2.getCycle()]);
+            drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
+            drive.rightLift.setTargetPosition(target[rb2.getCycle()]);
+
+
+            telemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
+            telemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+            telemetry.addData("Target", 0);
+            telemetry.update();
+
+            dashboardTelemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
+            dashboardTelemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+            dashboardTelemetry.addData("Target", 0);
+            dashboardTelemetry.update();
         }
     }
 }
