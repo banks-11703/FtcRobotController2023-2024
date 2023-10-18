@@ -9,12 +9,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.List;
-
-@TeleOp(name = "DriveCodeCommon", group = "Linear Opmode")
 @Config
-@Disabled
+
 public class DriveCodeCommon extends LinearOpMode {
-    double[] latch = {0,0.5,1};
+    public static double latchClosed = 0;
+    public static double latchOpen1 =0.5;
+    public static double latchOpen2 =1;
+    public static double[] latch = {latchClosed,latchOpen1,latchOpen2};
     public static double flipperscore = 0;
     public static double flipperintake = 1;
     GamepadEx a1 = new GamepadEx();
