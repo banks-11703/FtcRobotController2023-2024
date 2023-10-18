@@ -16,6 +16,7 @@ public class DriveCodeCommon extends LinearOpMode {
     GamepadEx x1 = new GamepadEx();
     GamepadEx y1 = new GamepadEx();
     GamepadEx lb1 = new GamepadEx();
+    GamepadEx rb2 = new GamepadEx(4,true);
     @Override
 
     public void runOpMode() throws InterruptedException {
@@ -33,7 +34,10 @@ public class DriveCodeCommon extends LinearOpMode {
         b1.updateButton(gamepad1.b);
         x1.updateButton(gamepad1.x);
         y1.updateButton(gamepad1.y);
-        lb1.updateButton(gamepad1.right_bumper);
+        lb1.updateButton(gamepad1.left_bumper);
+        rb2.updateButton(gamepad2.right_bumper);
+
+
     }
     public void rawDriving() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
