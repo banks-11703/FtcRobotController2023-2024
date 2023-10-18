@@ -96,7 +96,7 @@ public final class MecanumDrive {
 
     public final DcMotorEx frontLeft, backLeft, backRight, frontRight, leftLift, rightLift, intake;
 
-    public final Servo outake;
+    public final Servo outakeLatch,flipper;
     public final VoltageSensor voltageSensor;
 
     public final IMU imu;
@@ -186,8 +186,8 @@ public final class MecanumDrive {
         leftLift = hardwareMap.get(DcMotorEx.class,"ll");
         rightLift = hardwareMap.get(DcMotorEx.class,"rl");
         intake = hardwareMap.get(DcMotorEx.class, "i");
-        outake = hardwareMap.get(Servo.class,"o");
-
+        outakeLatch = hardwareMap.get(Servo.class,"o");
+        flipper = hardwareMap.get(Servo.class,"f");
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
