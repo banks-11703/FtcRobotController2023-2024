@@ -12,6 +12,7 @@ public class DriveCode extends DriveCodeCommon {
             updateButtons();
             rawDriving();
             intake();
+            outake();
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -14,6 +14,8 @@ import java.util.List;
 @Disabled
 public class DriveCodeCommon extends LinearOpMode {
     double[] latch = {0,0.5,1};
+    public static double flipperscore = 0;
+    public static double flipperintake = 1;
     GamepadEx a1 = new GamepadEx();
     GamepadEx b1 = new GamepadEx(3,true);
     GamepadEx x1 = new GamepadEx();
@@ -65,11 +67,12 @@ public class DriveCodeCommon extends LinearOpMode {
     }
     public void outake(){
         MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
-
-    }
-    public void moveLatch(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
         drive.outakeLatch.setPosition(latch[b1.getCycle()]);
+        if (y1.isToggled()){
+            drive.flipper.setPosition(flipperintake);
+        }else{
+            drive.flipper.setPosition(flipperscore);
+        }
     }
 
 }
