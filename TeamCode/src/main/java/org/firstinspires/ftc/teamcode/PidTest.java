@@ -28,12 +28,11 @@ public class PidTest extends LinearOpMode {
     public static double lKd = 0;
     public static double lKf = 0;
 
-//    public static int[] target = {0,100,200,300};
     public static int liftHeight0 = 0;
     public static int liftHeight1 = 100;
     public static int liftHeight2 = 200;
     public static int liftHeight3 = 300;
-    int target = 0;
+    int[] target = {liftHeight0,liftHeight1,liftHeight2,liftHeight3};
 
     GamepadEx rb2 = new GamepadEx(4,true);
     GamepadEx lb2 = new GamepadEx(4,false);
@@ -63,25 +62,11 @@ public class PidTest extends LinearOpMode {
                 rb2.setToggle(lb2.getCycle());
             }
 
-            switch (rb2.getCycle()) {
-                case 1:
-                    target = liftHeight1;
-                    break;
-                case 2:
-                    target = liftHeight2;
-                    break;
-                case 3:
-                    target = liftHeight3;
-                    break;
-                case 0:
-                default:
-                    target = liftHeight0;
-                    break;
-            }
+            int[] target = {liftHeight0,liftHeight1,liftHeight2,liftHeight3};
             drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
-            drive.rightLift.setTargetPosition(target);
+            drive.rightLift.setTargetPosition(target[rb2.getCycle()]);
             drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
-            drive.rightLift.setTargetPosition(target);
+            drive.rightLift.setTargetPosition(target[rb2.getCycle()]);
 
 
             telemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
