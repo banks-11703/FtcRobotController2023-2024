@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,9 +18,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class PidTest extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotorEx spinner = null;
-    private Servo outake;
-    private boolean buttonAWasPressed = false;
 //    public static double Kp = 10;
 //    public static double Ki = 3;
 //    public static double Kd = 0;
@@ -31,16 +29,15 @@ public class PidTest extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        spinner = hardwareMap.get(DcMotorEx.class, "spinnyThing");
-        outake = hardwareMap.get(Servo.class,"o");
-//        FtcDashboard dashboard = FtcDashboard.getInstance();
-//        Telemetry dashboardTelemetry = dashboard.getTelemetry();
-//        dashboardTelemetry.addData("Reality", spinner.getCurrentPosition());
-//        dashboardTelemetry.addData("Target", 0);
-//        dashboardTelemetry.update();
-//        spinner.setTargetPosition(target);
-//        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));        FtcDashboard dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = dashboard.getTelemetry();
+        dashboardTelemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
+        dashboardTelemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+        dashboardTelemetry.addData("Target", 0);
+        dashboardTelemetry.update();
+        spinner.setTargetPosition(target);
+        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         GamepadEx b1 = new GamepadEx();
         GamepadEx a1 = new GamepadEx();
 

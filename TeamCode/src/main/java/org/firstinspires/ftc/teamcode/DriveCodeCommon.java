@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "DriveCodeCommon", group = "Linear Opmode")
 @Config
@@ -17,8 +18,11 @@ public class DriveCodeCommon extends LinearOpMode {
     GamepadEx y1 = new GamepadEx();
     GamepadEx lb1 = new GamepadEx();
     GamepadEx rb2 = new GamepadEx(4,true);
-    @Override
+    GamepadEx lb2 = new GamepadEx(4,false);
 
+    int[] liftTargetPos = {0,100,200,300};
+
+    @Override
     public void runOpMode() throws InterruptedException {
 
     }
@@ -26,6 +30,10 @@ public class DriveCodeCommon extends LinearOpMode {
     public void Initialization() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         telemetry.update();
+        drive.leftLift.setTargetPosition(liftTargetPos[0]);
+        drive.rightLift.setTargetPosition(liftTargetPos[0]);
+        drive.leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drive.rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
     }
@@ -36,8 +44,13 @@ public class DriveCodeCommon extends LinearOpMode {
         y1.updateButton(gamepad1.y);
         lb1.updateButton(gamepad1.left_bumper);
         rb2.updateButton(gamepad2.right_bumper);
-
-
+        if(rb2.isPressed()){
+            lb2.setToggle(rb2.getCycle());
+        }
+        lb2.updateButton(gamepad2.left_bumper);
+        if(lb2.isPressed()){
+            rb2.setToggle(lb2.getCycle());
+        }
     }
     public void rawDriving() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -58,9 +71,11 @@ public class DriveCodeCommon extends LinearOpMode {
         }
     }
     public void lift(){
-//        if (b1.isPressed()){
-//
-//        }
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+        drive.leftLift.setPower(1);
+        drive.rightLift.setPower(1);
     }
     public void outake(){
         MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
