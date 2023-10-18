@@ -57,7 +57,7 @@ public class GamepadEx {
         return toggle;
     }
 
-    public void setToggle(int toggleModifier) {
-        toggle += toggleModifier;
+    public void setToggle(int newToggle) {
+        toggle = newToggle;
     }
 }
