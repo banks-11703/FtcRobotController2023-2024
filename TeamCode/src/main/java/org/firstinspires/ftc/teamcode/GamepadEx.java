@@ -23,6 +23,13 @@ public class GamepadEx {
         this.cycleUp = cycleUp;
     }
 
+    public GamepadEx(int cycleLength,boolean cycleUp,int startingToggle) {
+        wasPressed = false;
+        toggle = startingToggle;
+        this.cycleLength = cycleLength;
+        this.cycleUp = cycleUp;
+    }
+
     public void updateButton(boolean gamepadInput) {
         if(gamepadInput && !wasPressed) {
             if(cycleUp) {
@@ -57,7 +64,7 @@ public class GamepadEx {
         return toggle;
     }
 
-    public void setToggle(int toggleModifier) {
-        toggle += toggleModifier;
+    public void setToggle(int newToggle) {
+        toggle = newToggle;
     }
 }
