@@ -32,15 +32,21 @@ public class PidTest extends LinearOpMode {
     public static int liftHeight3 = 300;
     int[] targets = {liftHeight0,liftHeight1,liftHeight2,liftHeight3};
 
+    DcMotorEx rightLift, leftLift;
+
+
+
     GamepadEx rb2 = new GamepadEx(4,true);
     GamepadEx lb2 = new GamepadEx(4,false);
     @Override
     public void runOpMode() {
-
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));        FtcDashboard dashboard = FtcDashboard.getInstance();
+        leftLift = hardwareMap.get(DcMotorEx.class,"ll");
+        rightLift = hardwareMap.get(DcMotorEx.class,"rl");
+//        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
-        dashboardTelemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
-        dashboardTelemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+        dashboardTelemetry.addData("leftLift pos", leftLift.getCurrentPosition());
+        dashboardTelemetry.addData("RightLift pos", rightLift.getCurrentPosition());
         dashboardTelemetry.addData("Target", 0);
         dashboardTelemetry.update();
         telemetry.addData("Status", "Initialized");
@@ -65,19 +71,19 @@ public class PidTest extends LinearOpMode {
             targets[2] = liftHeight2;
             targets[3] = liftHeight3;
 
-            drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
-            drive.rightLift.setTargetPosition(targets[rb2.getCycle()]);
-            drive.rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
-            drive.rightLift.setTargetPosition(targets[rb2.getCycle()]);
+            rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
+            rightLift.setTargetPosition(targets[rb2.getCycle()]);
+            rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
+            rightLift.setTargetPosition(targets[rb2.getCycle()]);
 
 
-            telemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
-            telemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+            telemetry.addData("leftLift pos", leftLift.getCurrentPosition());
+            telemetry.addData("RightLift pos", rightLift.getCurrentPosition());
             telemetry.addData("Target", 0);
             telemetry.update();
 
-            dashboardTelemetry.addData("leftLift pos", drive.leftLift.getCurrentPosition());
-            dashboardTelemetry.addData("RightLift pos", drive.rightLift.getCurrentPosition());
+            dashboardTelemetry.addData("leftLift pos", leftLift.getCurrentPosition());
+            dashboardTelemetry.addData("RightLift pos", rightLift.getCurrentPosition());
             dashboardTelemetry.addData("Target", 0);
             dashboardTelemetry.update();
         }

@@ -15,8 +15,9 @@ public class DriveCodeCommon extends LinearOpMode {
     public static double latchClosed = 0;
     public static double latchOpen1 =0.5;
     public static double latchOpen2 =1;
-    public static double[] latch = {latchClosed,latchOpen1,latchOpen2};
-    public static double flipperscore = 0;
+//    public static double[] latch = {latchClosed,latchOpen1,latchOpen2};
+    double[] latch = {0.74,0.79,0.9};
+    public static double flipperscore = 0.52;
     public static double flipperintake = 1;
     GamepadEx a1 = new GamepadEx();
     GamepadEx b1 = new GamepadEx(3,true);
@@ -88,9 +89,9 @@ public class DriveCodeCommon extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
         drive.outakeLatch.setPosition(latch[b1.getCycle()]);
         if (y1.isToggled()){
-            drive.flipper.setPosition(flipperintake);
-        }else{
             drive.flipper.setPosition(flipperscore);
+        }else{
+            drive.flipper.setPosition(flipperintake);
         }
     }
 
