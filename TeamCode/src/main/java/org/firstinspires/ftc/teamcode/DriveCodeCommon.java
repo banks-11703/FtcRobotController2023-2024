@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 
@@ -25,7 +28,8 @@ public class DriveCodeCommon extends LinearOpMode {
 
     int[] liftTargetPos = {0,100,200,300};
 
-
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,6 +38,7 @@ public class DriveCodeCommon extends LinearOpMode {
 
     public void Initialization() {
         HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
+
         telemetry.update();
         drive.leftLift.setTargetPosition(liftTargetPos[0]);
         drive.rightLift.setTargetPosition(liftTargetPos[0]);
@@ -92,6 +97,13 @@ public class DriveCodeCommon extends LinearOpMode {
         }else{
             drive.flipper.setPosition(flipperintake);
         }
+    }
+
+    public void telemetry() {
+        telemetry.addData("Sample: ",true);
+        telemetry.update();
+        dashboardTelemetry.addData("Sample: ",true);
+        dashboardTelemetry.update();
     }
 
 }
