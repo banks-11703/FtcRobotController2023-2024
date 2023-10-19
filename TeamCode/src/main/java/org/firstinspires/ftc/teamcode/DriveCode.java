@@ -33,6 +33,7 @@ public class DriveCode extends DriveCodeCommon {
             rawDriving();
             intake();
             outake();
+            lift();
 
 //            switch(b1.getCycle()) {
 //                case 0:

@@ -6,8 +6,11 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,7 +18,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @TeleOp
 @Config
 public class PidTest extends LinearOpMode {
-    private ElapsedTime runtime = new ElapsedTime();
     public static double rKp = 10;
     public static double rKi = 3;
     public static double rKd = 0;
@@ -38,11 +40,13 @@ public class PidTest extends LinearOpMode {
 
     GamepadEx rb2 = new GamepadEx(4,true);
     GamepadEx lb2 = new GamepadEx(4,false);
+
+
     @Override
     public void runOpMode() {
+
         leftLift = hardwareMap.get(DcMotorEx.class,"ll");
         rightLift = hardwareMap.get(DcMotorEx.class,"rl");
-//        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
         dashboardTelemetry.addData("leftLift pos", leftLift.getCurrentPosition());
@@ -52,8 +56,9 @@ public class PidTest extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+
+
         waitForStart();
-        runtime.reset();
 
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -65,7 +70,6 @@ public class PidTest extends LinearOpMode {
             if(lb2.isPressed()){
                 rb2.setToggle(lb2.getCycle());
             }
-
             targets[0] = liftHeight0;
             targets[1] = liftHeight1;
             targets[2] = liftHeight2;
@@ -73,8 +77,8 @@ public class PidTest extends LinearOpMode {
 
             rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
             rightLift.setTargetPosition(targets[rb2.getCycle()]);
-            rightLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(rKp, rKi, rKd));
-            rightLift.setTargetPosition(targets[rb2.getCycle()]);
+            leftLift.setPIDCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, new PIDCoefficients(lKp, lKi, lKd));
+            leftLift.setTargetPosition(targets[rb2.getCycle()]);
 
 
             telemetry.addData("leftLift pos", leftLift.getCurrentPosition());

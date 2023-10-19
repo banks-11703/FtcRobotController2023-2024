@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.util.List;
 @Config
 
 public class DriveCodeCommon extends LinearOpMode {
@@ -29,13 +25,15 @@ public class DriveCodeCommon extends LinearOpMode {
 
     int[] liftTargetPos = {0,100,200,300};
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
     }
 
     public void Initialization() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         telemetry.update();
         drive.leftLift.setTargetPosition(liftTargetPos[0]);
         drive.rightLift.setTargetPosition(liftTargetPos[0]);
@@ -60,15 +58,15 @@ public class DriveCodeCommon extends LinearOpMode {
         }
     }
     public void rawDriving() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        drive.frontLeft.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x + (gamepad1.right_stick_x * 0.5));
-        drive.frontRight.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - (gamepad1.right_stick_x * 0.5));
-        drive.backRight.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - (gamepad1.right_stick_x * 0.5));
-        drive.backLeft.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x + (gamepad1.right_stick_x * 0.5));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
+        drive.frontLeft.setPower (gamepad1.left_stick_y + gamepad1.left_stick_x - (gamepad1.right_stick_x * 0.5));
+        drive.frontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + (gamepad1.right_stick_x * 0.5));
+        drive.backRight.setPower (gamepad1.left_stick_y - gamepad1.left_stick_x - (gamepad1.right_stick_x * 0.5));
+        drive.backLeft.setPower  (gamepad1.left_stick_y + gamepad1.left_stick_x + (gamepad1.right_stick_x * 0.5));
 
     }
     public void intake(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         if (a1.isToggled()){
            drive.intake.setPower(-1);
         }else if (lb1.isPressed()){
@@ -78,15 +76,16 @@ public class DriveCodeCommon extends LinearOpMode {
         }
     }
     public void lift(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
-        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         drive.leftLift.setPower(1);
         drive.rightLift.setPower(1);
+        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+
 
     }
     public void outake(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         drive.outakeLatch.setPosition(latch[b1.getCycle()]);
         if (y1.isToggled()){
             drive.flipper.setPosition(flipperscore);
