@@ -81,12 +81,14 @@ public class DriveCodeCommonNoRoadRunner extends LinearOpMode {
     }
     public void lift(){
         HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
-        drive.leftLift.setPower(1);
-        drive.rightLift.setPower(1);
-        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
-        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
-
-
+        drive.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.leftLift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+        drive.rightLift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+//        drive.leftLift.setPower(1);
+//        drive.rightLift.setPower(1);
+//        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+//        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
     }
     public void outake(){
         HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);

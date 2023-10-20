@@ -81,12 +81,14 @@ public class DriveCodeCommon extends LinearOpMode {
     }
     public void lift(){
         MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
-        drive.leftLift.setPower(1);
-        drive.rightLift.setPower(1);
-        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
-        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
-
-
+        drive.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.leftLift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+        drive.rightLift.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+//        drive.leftLift.setPower(1);
+//        drive.rightLift.setPower(1);
+//        drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
+//        drive.rightLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
     }
     public void outake(){
         MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
