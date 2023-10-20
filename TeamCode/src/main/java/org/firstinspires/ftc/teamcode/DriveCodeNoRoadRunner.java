@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
 @Config
-public class DriveCode extends DriveCodeCommon {
+public class DriveCodeNoRoadRunner extends DriveCodeCommonNoRoadRunner {
 
 
     @Override

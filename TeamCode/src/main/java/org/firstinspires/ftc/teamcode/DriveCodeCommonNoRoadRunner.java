@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 
-public class DriveCodeCommon extends LinearOpMode {
+public class DriveCodeCommonNoRoadRunner extends LinearOpMode {
     public static double latchClosed = 0;
     public static double latchOpen1 =0.5;
     public static double latchOpen2 =1;
@@ -37,7 +36,8 @@ public class DriveCodeCommon extends LinearOpMode {
     }
 
     public void Initialization() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
+
         telemetry.update();
         drive.leftLift.setTargetPosition(liftTargetPos[0]);
         drive.rightLift.setTargetPosition(liftTargetPos[0]);
@@ -62,7 +62,7 @@ public class DriveCodeCommon extends LinearOpMode {
         }
     }
     public void rawDriving() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         drive.frontLeft.setPower (gamepad1.left_stick_y + gamepad1.left_stick_x - (gamepad1.right_stick_x * 1));
         drive.frontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + (gamepad1.right_stick_x * 1));
         drive.backRight.setPower (gamepad1.left_stick_y - gamepad1.left_stick_x - (gamepad1.right_stick_x * 1));
@@ -70,7 +70,7 @@ public class DriveCodeCommon extends LinearOpMode {
 
     }
     public void intake(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         if (a1.isToggled()){
            drive.intake.setPower(-1);
         }else if (lb1.isPressed()){
@@ -80,7 +80,7 @@ public class DriveCodeCommon extends LinearOpMode {
         }
     }
     public void lift(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         drive.leftLift.setPower(1);
         drive.rightLift.setPower(1);
         drive.leftLift.setTargetPosition(liftTargetPos[rb2.getCycle()]);
@@ -89,7 +89,7 @@ public class DriveCodeCommon extends LinearOpMode {
 
     }
     public void outake(){
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0,0,0));
+        HardwareMapTeam drive = new HardwareMapTeam(hardwareMap);
         drive.outakeLatch.setPosition(latch[b1.getCycle()]);
         if (y1.isToggled()){
             drive.flipper.setPosition(flipperscore);
